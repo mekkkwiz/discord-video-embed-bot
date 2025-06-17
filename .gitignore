@@ -7,11 +7,33 @@ wheels/
 *.egg-info
 
 # Virtual environments
-.venv
+.venv/
 .env
 
-# idea files
+# IDE files
 .idea/
+.vscode/
+*.swp
+*.swo
+*~
 
-#log files
+# Log files
 *.log
+logs/
+
+# Temporary files
+downloads/
+temp/
+tmp/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# UV files
+.python-version
+
+# Test files
+.pytest_cache/
+.coverage
+htmlcov/

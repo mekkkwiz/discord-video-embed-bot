@@ -5,6 +5,7 @@ import os
 import asyncio
 
 from cogs.video_embed import VideoEmbed
+from cogs.team_manager import TeamManager
 from utils.logger import setup_logger
 from utils.keep_alive import keep_alive
 
@@ -54,6 +55,7 @@ async def ping(ctx):
 # Setup function to load cogs
 async def setup():
     await bot.add_cog(VideoEmbed(bot))
+    await bot.add_cog(TeamManager(bot))
 
 # Entry point
 async def main():

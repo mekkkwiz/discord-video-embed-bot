@@ -1,12 +1,63 @@
 [project]
 name = "discord-video-embed-bot"
 version = "0.1.0"
-description = "Add your description here"
+description = "A Discord bot for video embedding and team generation with modern slash commands"
 readme = "README.md"
 requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+    { name = "Your Name", email = "your.email@example.com" }
+]
+keywords = ["discord", "bot", "video", "embed", "team", "generator"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Communications :: Chat",
+    "Topic :: Games/Entertainment",
+]
 dependencies = [
     "discord-py>=2.5.2",
     "flask>=3.1.1",
     "python-dotenv>=1.1.0",
     "yt-dlp>=2025.6.9",
 ]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "flake8>=6.0.0",
+    "mypy>=1.5.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/yourusername/discord-video-embed-bot"
+Repository = "https://github.com/yourusername/discord-video-embed-bot.git"
+Issues = "https://github.com/yourusername/discord-video-embed-bot/issues"
+Documentation = "https://github.com/yourusername/discord-video-embed-bot#readme"
+
+[project.scripts]
+discord-bot = "bot:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
