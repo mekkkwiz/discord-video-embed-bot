@@ -13,76 +13,60 @@ from utils.team_generator import generate_teams, validate_team_input
 
 def test_basic_team_generation():
     """Test basic team generation functionality."""
-    print("=== Testing Basic Team Generation ===")
-    
     people = ["Alice", "Bob", "Charlie", "Diana", "Eve", "Frank", "Grace", "Henry"]
     num_teams = 3
-    
-    try:
-        result = generate_teams(people, num_teams)
-        
-        print(f"Generated {result['num_teams']} teams from {result['total_people']} people:")
-        for team_name, members in result['teams'].items():
-            print(f"  {team_name}: {', '.join(members)}")
-        
-        print(f"Team sizes: {result['min_team_size']}-{result['max_team_size']} (avg: {result['average_team_size']:.1f})")
-        print("✅ Basic test passed!")
-        
-    except Exception as e:
-        print(f"❌ Basic test failed: {e}")
+
+    result = generate_teams(people, num_teams)
+
+    assert result['num_teams'] == num_teams
+    assert result['total_people'] == len(people)
+    assert set(sum(result['teams'].values(), [])) == set(people)
+    assert result['min_team_size'] <= result['max_team_size']
+    assert abs(result['average_team_size'] - (len(people) / num_teams)) < 1e-6
 
 
 def test_input_validation():
     """Test input validation functionality."""
-    print("\n=== Testing Input Validation ===")
-    
     test_cases = [
-        ("Alice,Bob,Charlie,Diana", 4, "Valid input"),
-        ("Alice, Bob , Charlie,Diana ", 4, "Input with spaces"),
-        ("Alice,Bob,Alice,Charlie", 3, "Duplicate names"),
-        ("", 0, "Empty input (should fail)"),
-        ("Alice", 1, "Single person"),
-        ("Alice,Bob,Charlie,Diana,Eve,Frank,Grace,Henry,Ivy,Jack", 10, "10 people")
+        ("Alice,Bob,Charlie,Diana", 4, True),
+        ("Alice, Bob , Charlie,Diana ", 4, True),
+        ("Alice,Bob,Alice,Charlie", 3, True),
+        ("", 0, False),
+        ("Alice", 1, True),
+        ("Alice,Bob,Charlie,Diana,Eve,Frank,Grace,Henry,Ivy,Jack", 10, True)
     ]
-    
-    for input_str, expected_count, description in test_cases:
-        try:
+
+    for input_str, expected_count, should_pass in test_cases:
+        if should_pass:
             people = validate_team_input(input_str)
-            print(f"✅ {description}: {len(people)} people - {people}")
-            if expected_count > 0 and len(people) != expected_count:
-                print(f"   ⚠️  Expected {expected_count}, got {len(people)}")
-        except ValueError as e:
-            print(f"❌ {description}: {e}")
+            assert len(people) == expected_count
+        else:
+            import pytest
+            with pytest.raises(ValueError):
+                validate_team_input(input_str)
 
 
 def test_edge_cases():
     """Test edge cases and error conditions."""
-    print("\n=== Testing Edge Cases ===")
-    
+    import pytest
+
     # Test with more teams than people
-    try:
-        people = ["Alice", "Bob"]
-        result = generate_teams(people, 3)
-        print("❌ Should have failed with more teams than people")
-    except ValueError as e:
-        print(f"✅ Correctly handled more teams than people: {e}")
-    
+    people = ["Alice", "Bob"]
+    with pytest.raises(ValueError):
+        generate_teams(people, 3)
+
     # Test with exact number of teams as people
-    try:
-        people = ["Alice", "Bob", "Charlie"]
-        result = generate_teams(people, 3)
-        print(f"✅ One person per team: {result['teams']}")
-    except Exception as e:
-        print(f"❌ Failed with one person per team: {e}")
-    
+    people = ["Alice", "Bob", "Charlie"]
+    result = generate_teams(people, 3)
+    assert all(len(members) == 1 for members in result['teams'].values())
+
     # Test with large number of people
-    try:
-        people = [f"Person{i}" for i in range(1, 101)]  # 100 people
-        result = generate_teams(people, 10)
-        sizes = [len(team) for team in result['teams'].values()]
-        print(f"✅ Large test (100 people, 10 teams): sizes {min(sizes)}-{max(sizes)}")
-    except Exception as e:
-        print(f"❌ Failed with large number: {e}")
+    people = [f"Person{i}" for i in range(1, 101)]  # 100 people
+    result = generate_teams(people, 10)
+    sizes = [len(team) for team in result['teams'].values()]
+    assert min(sizes) >= 10
+    assert max(sizes) <= 10
+    assert sum(sizes) == 100
 
 
 def interactive_test():

@@ -89,7 +89,7 @@ python bot.py
 uv sync --dev
 
 # Run tests
-uv run python test_teams.py
+uv run python tests/test_teams.py
 
 # Run with development mode
 uv run python bot.py
@@ -143,9 +143,10 @@ discord-video-embed-bot/
 │   ├── keep_alive.py      # Bot uptime management
 │   ├── video_downloader.py # Video download logic
 │   └── team_generator.py  # Team generation logic
+├── tests/                 # Test suite
+│   └── test_teams.py      # Test suite for team generation
 ├── logs/                  # Log files
-├── downloads/             # Temporary video storage
-└── test_teams.py          # Test suite for team generation
+└── downloads/             # Temporary video storage
 ```
 
 ## ⚙️ Configuration
@@ -198,7 +199,7 @@ source .venv/bin/activate
 ### Running Tests
 ```bash
 # Test team generation functionality
-uv run python test_teams.py
+uv run python tests/test_teams.py
 
 # Check for syntax errors
 uv run python -m py_compile bot.py cogs/*.py utils/*.py
@@ -264,7 +265,7 @@ uv sync
 
 ### Getting Help
 1. Check the logs in `logs/discord-bot.log`
-2. Run the test suite: `uv run python test_teams.py`
+2. Run the test suite: `uv run python tests/test_teams.py`
 3. Use `/teamhelp` for team generation help
 4. Check Discord bot permissions
 

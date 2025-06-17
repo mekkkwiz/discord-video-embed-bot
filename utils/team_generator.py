@@ -28,7 +28,8 @@ def generate_teams(people: List[str], num_teams: int) -> Dict[str, Any]:
     if len(people) < num_teams:
         raise ValueError(f"Cannot create {num_teams} teams with only {len(people)} people")
     
-    # Remove duplicates and strip whitespace
+    # Remove duplicates and strip whitespace.
+    # Note: Using a set here loses the original order of names, but since we shuffle later, this is acceptable.
     unique_people = list(set(name.strip() for name in people if name.strip()))
     
     if len(unique_people) < num_teams:
